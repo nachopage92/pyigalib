@@ -18,7 +18,7 @@ start = time()
 # B-spline order:
 p=2
 # Index of the highest control point:
-n=7
+n=10
 # Generate (at the moment only uniform clamped) knot vector (it must be clamped):
 uvec = make_knot_vector(p,n+1,"clamped")
 #Scale knot vector to match the domain size:
@@ -56,11 +56,12 @@ f=2.*pi**2*np.sin(pi*x)*np.sin(pi*y)
 # PDE operator-tensor product Laplacian
 L=-(np.kron(N,D2)+np.kron(D2,N))
 # condition number
-#print p,n+1,np.linalg.cond(L) 
+print (p,n+1,np.linalg.cond(L))
 #sparsity pattern of L
-#plt.title('Sparsity pattern of discretization matrix for Laplace operator, p = %d, n = %d'  % (p,n))
-#plt.spy(L, precision=1e-50, marker='s', markersize=2)
-#plt.show()
+fig=plt.figure()
+plt.title('Sparsity pattern of discretization matrix for Laplace operator, p = %d, n = %d'  % (p,n))
+plt.spy(L, precision=1e-50, marker='s', markersize=2)
+plt.show()
 
 # Solve system
 u=solve(L,f) 
@@ -68,7 +69,7 @@ elapsed = (time() - start)
 
 # Reshape long 1D results to 2D grid:
 Py=np.zeros((n+1,n+1))
-Py[1:n,1:n] = u.reshape(n-1,n-1)
+Py[1:n,1:n] = u.reshape(n-1,n-1) # ver np.kron para entender este paso
 
 # Interpolate to finer grid for plotting
 nsamples = 50
@@ -110,7 +111,7 @@ ax.set_zlabel('u')
 plt.show()
 
 # If you have it installed:
-#from mayavi import mlab
-#mlab.surf(xnd,ynd,uu)
-#mlab.show()
-#mlab.savefig('poisson-mlab.png')
+from mayavi import mlab
+mlab.surf(xnd,ynd,uu)
+mlab.show()
+mlab.savefig('poisson-mlab.png')

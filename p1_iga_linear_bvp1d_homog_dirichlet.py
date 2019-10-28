@@ -69,8 +69,9 @@ curvepts = [ C(s) for s in sampling ]
 
 # Max error
 #print zip(*curvepts)[0] # samo x coordinatre tacaka
-maxerr = np.max(np.abs(exact-zip(*curvepts)[1])) # samo y coordinatre tacaka
-print p, n, maxerr
+x,app = zip(*curvepts)
+maxerr = np.max(np.abs(exact-app)) # samo y coordinatre tacaka
+print( p, n, maxerr )
 
 # Create a matplotlib figure
 fig = plt.figure()
