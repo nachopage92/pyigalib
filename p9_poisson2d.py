@@ -22,7 +22,7 @@ n=10
 # Generate (at the moment only uniform clamped) knot vector (it must be clamped):
 uvec = make_knot_vector(p,n+1,"clamped")
 #Scale knot vector to match the domain size:
-a=-1; b=1 # domain size in 1d
+a=0; b=1 # domain size in 1d
 uvec = np.array(uvec)
 #print uvec
 # scale to [-1,1]
@@ -53,7 +53,7 @@ D2 = D2[1:n,1:n]
 
 # RHS vector
 pi=np.pi
-f=2.*pi**2*np.sin(pi*x)*np.sin(pi*y)
+f=-1.25*pi*pi*np.sin(pi*x)*np.cos(0.5*pi*y)
 
 # PDE operator-tensor product Laplacian
 L=-(np.kron(N,D2)+np.kron(D2,N))
@@ -91,9 +91,11 @@ uu=np.zeros((nsamples,nsamples))
 # Sustina B-spline interpolacije u jednoj komandi
 uu = np.dot(np.kron(N,N),Py.flatten())
 #uu = np.dot(np.kron(N,N),Py.flatten(1))
-exact=np.sin(pi*xx)*np.sin(pi*yy)
+exact=np.sin(pi*x)*np.cos(0.5*pi*y)
 
 # Exact solution and Error
+print(len(uu))
+print(len(exact))
 maxerr=max(abs(uu-exact))
 #print p,n,maxerr,elapsed
 
